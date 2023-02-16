@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Alumno } from 'src/app/interface/alumno';
 import { AlumnoService } from 'src/app/services/alumno.service';
 import { MatTableDataSource } from '@angular/material/table';
+// import { filter, from, interval, map, mergeMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-alumnos',
@@ -22,6 +23,27 @@ export class AlumnosComponent implements OnInit, OnDestroy{
   suscripcion!: Subscription;
 
   constructor(private _alumnoService: AlumnoService ){
+
+    // of(this.alumnos).pipe(
+    //   map((alumnos: Alumno[]) => {
+    //     return alumnos.filter((alumno: Alumno) => alumno.cod == 3)
+    //   })
+    // ).subscribe((alumnos)=>{
+    //   console.log("Obtenido desde el OF, filtrado por cod ", alumnos);
+    // });
+
+    // of(this.alumnos).pipe(
+    //   mergeMap((alumnos: Alumno[]) => {
+    //     return interval(5000).pipe(map((i => {
+    //       return {
+    //         cod: `${alumnos[i].cod} - ${i}`,
+    //         nombre: alumnos[i].nombre,
+    //         apellido: alumnos[i].apellido,
+    //         estatus: alumnos[i].estatus
+    //       }
+    //     })));
+    //   })
+    // ).subscribe((datos) => console.log('Utilizando mergeMap', datos));
 
   }
 

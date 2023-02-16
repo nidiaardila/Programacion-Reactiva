@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Alumno } from "src/app/interface/alumno";
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { filter, from, interval, map, mergeMap, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,16 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class AlumnoService {
 
   private alumnos: Alumno[]=[
-    {cod: 1, nombre: 'Maria', apellido: 'Luna', estatus: 'Activo'},
-    {cod: 2, nombre: 'Antonio', apellido: 'Cordoba', estatus: 'Activo'},
-    {cod: 3, nombre: 'Andres', apellido: 'Pinzon', estatus: 'Activo'},
-    {cod: 4, nombre: 'Rodrigo', apellido: 'Mora', estatus: 'Inactivo'},
-    {cod: 5, nombre: 'Jorge', apellido: 'Cipriano', estatus: 'Inactivo'},
+    {cod: 1, nombre: 'Maria', apellido: 'Luna', estatus: 'Activo-other'},
+    {cod: 2, nombre: 'Antonio', apellido: 'Cordoba', estatus: 'Activo-other'},
+    {cod: 3, nombre: 'Andres', apellido: 'Pinzon', estatus: 'Activo-other'},
+    {cod: 4, nombre: 'Rodrigo', apellido: 'Mora', estatus: 'Inactivo-other'},
+    {cod: 5, nombre: 'Jorge', apellido: 'Cipriano', estatus: 'Inactivo-other'},
+    {cod: 6, nombre: 'Ana', apellido: 'Melendez', estatus: 'Activo-other'},
+    {cod: 7, nombre: 'Nathalia', apellido: 'Oliveira', estatus: 'Activo-other'},
+    {cod: 8, nombre: 'Sophia', apellido: 'Jaimes', estatus: 'Inactivo-other'},
+    {cod: 9, nombre: 'Blanca', apellido: 'Herrera', estatus: 'Activo-other'},
+    {cod: 10, nombre: 'Fernando', apellido: 'Diaz', estatus: 'Activo-other'},
   ];
 
   getAlumno(){
@@ -23,6 +29,28 @@ export class AlumnoService {
 
   constructor() {
     this.alumnos$ = new BehaviorSubject(this.alumnos);
+
+    of(this.alumnos).pipe(
+      map((alumnos: Alumno[]) => {
+        return alumnos.filter((alumno: Alumno) => alumno.cod == 3)
+      })
+    ).subscribe((alumnos)=>{
+      console.log("Obtenido desde el of, filtrado por cod de alumno ", alumnos);
+    });
+
+    of(this.alumnos).pipe(
+      mergeMap((alumnos: Alumno[]) => {
+        return interval(4000).pipe(map((i => {
+          return {
+            cod: `${alumnos[i].cod} - ${i}`,
+            nombre: alumnos[i].nombre,
+            apellido: alumnos[i].apellido,
+            estatus: alumnos[i].estatus
+          }
+        })));
+      })
+    ).subscribe((datos) => console.log('Utilizando mergeMap', datos));
+
    }
 
    obtenerAlumnosPromise(): Promise<Alumno[]>{
