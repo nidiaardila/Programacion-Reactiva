@@ -7,6 +7,9 @@ import { filter, from, interval, map, mergeMap, of } from 'rxjs';
   providedIn: 'root'
 })
 export class AlumnoService {
+  obtenerAlumnos() {
+    throw new Error('Method not implemented.');
+  }
 
   private alumnos: Alumno[]=[
     {cod: 1, nombre: 'Maria', apellido: 'Luna', estatus: 'Activo-other'},
@@ -26,6 +29,7 @@ export class AlumnoService {
   }
 
   private alumnos$!: BehaviorSubject<Alumno[]>;
+ 
 
   constructor() {
     this.alumnos$ = new BehaviorSubject(this.alumnos);
@@ -40,7 +44,7 @@ export class AlumnoService {
 
     of(this.alumnos).pipe(
       mergeMap((alumnos: Alumno[]) => {
-        return interval(4000).pipe(map((i => {
+        return interval(5000).pipe(map((i => {
           return {
             cod: `${alumnos[i].cod} - ${i}`,
             nombre: alumnos[i].nombre,
@@ -72,4 +76,7 @@ export class AlumnoService {
     this.alumnos$.next(this.alumnos);
     console.log('Alumno agregado', this.alumnos);
   }
+
+    
+
 }
